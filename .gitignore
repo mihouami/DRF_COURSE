@@ -1,0 +1,58 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pyo
+*.pyc
+
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+*.sqlite3
+media/
+static/
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# IDEs
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+*.cover
+
+# pytest
+.cache/
+
+# mypy
+.mypy_cache/
+
+# Django migrations
+migrations/
+
+# Testing & debug files
+*.log
+*.out
+*.bak
+*.swp
+
+# Secrets
+*.env
+*.env.*
