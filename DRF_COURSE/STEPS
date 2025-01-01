@@ -1,0 +1,42 @@
+# STEP 1 : models.py
+from django.db import models
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)  # Title of the book.
+    author = models.CharField(max_length=100)  # Author's name.
+    published_date = models.DateField()  # Date the book was published.
+    pages = models.PositiveIntegerField()  # Number of pages in the book.
+
+    def __str__(self):
+        return self.title
+
+# STEP 2 : serializers.py
+from rest_framework import serializers
+# from .models import Book
+
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book  # Specify the model.
+        fields = ['id', 'title', 'author', 'published_date', 'pages']  # Fields to include in the API.
+
+
+# STEP 3 : views.py
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+# from .models import Book
+# from .serializers import BookSerializer
+
+@api_view(['GET'])
+def book_list(request):
+    books = Book.objects.all()  # Get all book objects.
+    serializer = BookSerializer(books, many=True)  # Serialize the book objects.
+    return Response(serializer.data)  # Return the serialized data as JSON.
+
+
+# STEP 4 : urls.py
+from django.urls import path
+# from .views import book_list
+
+urlpatterns = [
+    path('books/', book_list),  # URL to access the book list API.
+]

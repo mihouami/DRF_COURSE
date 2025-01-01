@@ -59,3 +59,11 @@ class OrderSerializer(serializers.ModelSerializer):
         # Custom method to calculate the total price of the order.
         order_items = obj.items.all()  # Retrieve all items in the order.
         return sum(order_item.item_subtotal for order_item in order_items)  # Sum the subtotals of all items.
+
+
+class ProductInfoSerializer(serializers.Serializer):
+    #Get all products, count of products and max price of products
+    products = ProductSerializer(many=True)
+    count = serializers.IntegerField()
+    max_price = serializers.FloatField()
+    total_stock_value = serializers.FloatField()
