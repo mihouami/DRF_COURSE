@@ -36,13 +36,13 @@ class Order(models.Model):
         return f'Order {self.order_id} by {self.user.username}'
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     
     @property
     def item_subtotal(self):
-        return self.Product.price * self.quantity
+        return self.product.price * self.quantity
     
     def __str__(self):
-        return f'{self.Product.name} x {self.quantity} in order {self.order.order_id}'
+        return f'{self.product.name} x {self.quantity} in order {self.order.order_id}'
