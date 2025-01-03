@@ -24,6 +24,16 @@ class ProductDetail(generics.RetrieveAPIView):
 class OrderList(generics.ListAPIView):
     queryset = Order.objects.prefetch_related('items__product')  # Queryset to retrieve all orders with related items and products.
     serializer_class = OrderSerializer # Serializer class to use for serializing the retrieved orders.
+    
+
+class UserOrderList(generics.ListAPIView):
+    queryset = Order.objects.prefetch_related('items__product')  
+    serializer_class = OrderSerializer 
+    
+    def get_queryset(self):
+        user = self.request.user
+        qs = super().get_queryset()
+        return qs.filter(user=user)
 
 
 
