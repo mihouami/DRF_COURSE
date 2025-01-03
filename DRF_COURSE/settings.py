@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     #APP MANUALLY ADDED
     'api',
     'rest_framework',
+    'silk',
 ]
 
 MIDDLEWARE = [
@@ -38,6 +39,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #MIDDLEWARE MANUALLY ADDED
+    'silk.middleware.SilkyMiddleware',
+
 ]
 
 ROOT_URLCONF = 'DRF_COURSE.urls'
