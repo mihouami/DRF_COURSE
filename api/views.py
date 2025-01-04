@@ -7,6 +7,7 @@ from rest_framework.decorators import api_view  # Decorator to define API views 
 from django.db.models import Max  # Importing Max aggregation function for database queries.
 from rest_framework import generics # Importing generics for class-based views.
 from rest_framework.permissions import IsAuthenticated  # Importing IsAuthenticated permission class for API views.
+from rest_framework.views import APIView  # Importing APIView class for class-based views.
 
 
 ##### PRODUCTS VIEWS #####
@@ -21,12 +22,14 @@ class ProductDetail(generics.RetrieveAPIView):
     serializer_class = ProductSerializer # Serializer class to use for serializing the retrieved product.
     lookup_url_kwarg = 'product_id'  # Custom URL keyword argument to retrieve the product ID from the URL.
 
+
 ##### ORDERS VIEWS #####
 class OrderList(generics.ListAPIView):
     queryset = Order.objects.prefetch_related('items__product')  # Queryset to retrieve all orders with related items and products.
     serializer_class = OrderSerializer # Serializer class to use for serializing the retrieved orders.
     
 
+##### USER ORDER LIST VIEW #####
 class UserOrderList(generics.ListAPIView):
     queryset = Order.objects.prefetch_related('items__product')  
     serializer_class = OrderSerializer 
@@ -38,8 +41,21 @@ class UserOrderList(generics.ListAPIView):
         return qs.filter(user=user)
 
 
-
 ##### PRODUCT INFO VIEWS #####
+class ProductInfo(APIView):
+    def get(self, request):
+        products = Product.objects.all()
+        serializer = ProductInfoSerializer({
+            'products': products,
+            'count': len(products),
+            'max_price': products.aggregate(max_price=Max('price'))['max_price'],
+            'total_stock_value': sum(p.price * p.stock for p in products),
+        })
+        return Response(serializer.data)
+
+
+
+'''
 @api_view(['GET'])  
 def product_info(request):
     products = Product.objects.all()
@@ -52,7 +68,7 @@ def product_info(request):
     return Response(serializer.data)
 
 
-'''
+
 @api_view(['GET'])  # Specifies that this view only handles GET requests.
 def product_list(request):
     products = Product.objects.all() # Retrieve all products from the database.
