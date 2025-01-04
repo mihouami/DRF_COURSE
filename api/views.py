@@ -6,6 +6,7 @@ from rest_framework.response import Response  # DRF's Response class to standard
 from rest_framework.decorators import api_view  # Decorator to define API views supporting specific HTTP methods.
 from django.db.models import Max  # Importing Max aggregation function for database queries.
 from rest_framework import generics # Importing generics for class-based views.
+from rest_framework.permissions import IsAuthenticated  # Importing IsAuthenticated permission class for API views.
 
 
 ##### PRODUCTS VIEWS #####
@@ -29,6 +30,7 @@ class OrderList(generics.ListAPIView):
 class UserOrderList(generics.ListAPIView):
     queryset = Order.objects.prefetch_related('items__product')  
     serializer_class = OrderSerializer 
+    permission_classes = [IsAuthenticated]  # Specifies that the user must be authenticated to access this view.
     
     def get_queryset(self):
         user = self.request.user
