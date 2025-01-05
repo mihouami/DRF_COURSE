@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "api",
     "rest_framework",
     "silk",
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -126,5 +127,14 @@ REST_FRAMEWORK = {
         #ADDED MANUALY AFTER PIP INSTALL
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'A-commerce API',
+    'DESCRIPTION': 'A simple product and Order API',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
 }
