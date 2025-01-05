@@ -27,10 +27,16 @@ class ProductListCreate(generics.ListCreateAPIView):
         return super().get_permissions()
 
 ##### PRODUCT DETAIL VIEW #####
-class ProductDetail(generics.RetrieveAPIView):
+class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_url_kwarg = "product_id"
+    
+    def get_permissions(self):
+        self.permission_classes = [AllowAny]
+        if self.request.method in ['PUT', 'DELETE', 'PATCH']:
+            self.permission_classes = [IsAdminUser]
+        return super().get_permissions()
 
 
 ##### ORDERS VIEWS #####
