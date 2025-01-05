@@ -2,14 +2,35 @@ GET http://127.0.0.1:8000/products/ HTTP/1.1
 
 
 ###
-
 POST http://127.0.0.1:8000/products/ HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM2MDgzNTk2LCJpYXQiOjE3MzYwODMyOTYsImp0aSI6Ijc2Y2Y4ZGFhNWRkYzRhZTQ4MjM0ZmE1MWQ4N2E5ZGFkIiwidXNlcl9pZCI6Mn0.-U7MfWzpcOQy824RartiAiBnZ6E4Ht4apElrfaE2hBY
 
 {
-    "name": "via api.htpp",
+    "name": "via api.http using auth token",
     "price": 300.00,
     "stock": 15,
     "description": "test description"
 }
 
+###
+POST http://127.0.0.1:8000/api/token/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "amine",
+    "password": "0000"
+}
+
+###
+
+GET http://127.0.0.1:8000/user-orders/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM2MDgzOTY5LCJpYXQiOjE3MzYwODM2NjksImp0aSI6ImFmMDRkMzMyYTc4ZjQwODBiOGQ3NzZiZTEzM2I4ZDg4IiwidXNlcl9pZCI6Mn0.u98wv6OycfaGc6YIL76190xQquvd1f28p1P26NIPMe0
+
+###
+POST http://127.0.0.1:8000/api/token/refresh/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczNjE3MzY5MiwiaWF0IjoxNzM2MDg3MjkyLCJqdGkiOiJhYWU5MmUwNTc5ZjI0NjY3YWRlYmY1OGIwMDVjMmM5NCIsInVzZXJfaWQiOjJ9.20BM-QqxFO6yzmLTaBR7O4_-2Y9KzKxJrcMPf0QtomE"
+}

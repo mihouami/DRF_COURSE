@@ -1,16 +1,14 @@
-from django.contrib import (
-    admin,
-)  # Importing the admin module for managing the Django admin site.
-from django.urls import (
-    path,
-    include,
-)  # Importing functions to define URL patterns and include other URL configurations.
+from django.contrib import admin
+from django.urls import path, include
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
-# Define the root URL patterns for the project.
 urlpatterns = [
-    path("admin/", admin.site.urls),  # URL for the Django admin interface.
-    path("", include("api.urls")),  # Include the URL patterns from the 'api' app.
-    path(
-        "silk/", include("silk.urls", namespace="silk")
-    ),  # Include the URL patterns from the 'silk' app.
+    path("admin/", admin.site.urls),  
+    path("", include("api.urls")),  
+    path("silk/", include("silk.urls", namespace="silk")),  
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
