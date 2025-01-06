@@ -13,7 +13,7 @@ from rest_framework.permissions import (
     AllowAny
 )
 from rest_framework.views import APIView
-from .filters import ProductFilter
+from .filters import ProductFilter, InStockFilterBackend
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -27,7 +27,8 @@ class ProductListCreate(generics.ListCreateAPIView):
         DjangoFilterBackend, 
         filters.SearchFilter,
         filters.OrderingFilter,
-        ]
+        InStockFilterBackend
+    ]
     search_fields = ["name", "description"]
     ordering_fields = ["name", "price", "stock"]
     
