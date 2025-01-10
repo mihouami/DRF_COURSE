@@ -14,13 +14,14 @@ from rest_framework.permissions import (
 )
 from rest_framework.views import APIView
 from .filters import ProductFilter, InStockFilterBackend
-from rest_framework import filters
+from rest_framework import filters, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 
 
 ##### PRODUCTS VIEWS #####
 class ProductListCreate(generics.ListCreateAPIView):
-    queryset = Product.objects.all()
+    queryset = Product.objects.order_by("pk")
     serializer_class = ProductSerializer
     filterset_class = ProductFilter
     filter_backends = [
@@ -31,6 +32,12 @@ class ProductListCreate(generics.ListCreateAPIView):
     ]
     search_fields = ["name", "description"]
     ordering_fields = ["name", "price", "stock"]
+    pagination_class = PageNumberPagination
+    pagination_class.page_size = 2
+    pagination_class.page_query_param = 'pagenum'
+    pagination_class.page_size_query_param = 'size'
+    pagination_class.max_page_size = 7
+    
     
     def get_permissions(self):
         self.permission_classes = [AllowAny]
@@ -51,24 +58,6 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
         return super().get_permissions()
 
 
-##### ORDERS VIEWS #####
-class OrderList(generics.ListAPIView):
-    queryset = Order.objects.prefetch_related("items__product")
-    serializer_class = OrderSerializer
-
-
-##### USER ORDER LIST VIEW #####
-class UserOrderList(generics.ListAPIView):
-    queryset = Order.objects.prefetch_related("items__product")
-    serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        user = self.request.user
-        qs = super().get_queryset()
-        return qs.filter(user=user)
-
-
 ##### PRODUCT INFO VIEWS #####
 class ProductInfo(APIView):
     def get(self, request):
@@ -82,3 +71,12 @@ class ProductInfo(APIView):
             }
         )
         return Response(serializer.data)
+
+##### ORDERS VIEWS #####
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [AllowAny]
+    pagination_class = None
+
+

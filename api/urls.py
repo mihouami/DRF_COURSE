@@ -3,15 +3,18 @@ from .views import (
     ProductInfo,
     ProductListCreate,
     ProductDetail,
-    OrderList,
-    UserOrderList,
+    OrderViewSet
 )
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register('orders', OrderViewSet)
 
 urlpatterns = [
     path("products/", ProductListCreate.as_view()),
     path("products/<int:product_id>/", ProductDetail.as_view()),
     path("product_info/", ProductInfo.as_view()),
-    path("orders/", OrderList.as_view()),
-    path("user-orders/", UserOrderList.as_view(), name="user-orders"),
-    
+
 ]
+
+urlpatterns += router.urls
